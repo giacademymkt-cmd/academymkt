@@ -174,16 +174,16 @@ select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%
   <div class="login-card">
     <div class="login-logo">🚀 <span>GI</span> Dashboard</div>
     <p class="login-subtitle">Gestão de Impacto — Social Media 2026</p>
-    <label class="login-label">E-mail da equipe</label>
-    <input type="email" id="login-email" class="login-input" placeholder="seu@email.com" onkeydown="if(event.key==='Enter')doLogin()">
+    <label class="login-label">Seu nome</label>
+    <input type="text" id="login-email" class="login-input" placeholder="Ex: William" autocomplete="off" onkeydown="if(event.key==='Enter')doLogin()">
     <label class="login-label">Senha</label>
-    <input type="password" id="login-password" class="login-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    <input type="password" id="login-password" class="login-input" placeholder="Ex: william123" onkeydown="if(event.key==='Enter')doLogin()">
     <button id="login-btn" class="login-btn" onclick="doLogin()">Entrar</button>
     <div id="login-error" class="login-error"></div>
     <div class="login-hint">
-      <strong style="color:var(--text2)">Primeiro acesso?</strong><br>
-      Acesse o Supabase Dashboard para criar as senhas da equipe em:<br>
-      <span style="color:var(--accent)">Authentication → Users → Invite user</span>
+      <strong style="color:var(--text2)">Acesso da equipe</strong><br>
+      Digite seu primeiro nome e a senha no formato <span style="color:var(--accent)">nome123</span><br>
+      Ex: <strong>William</strong> / <strong>william123</strong>
     </div>
   </div>
 </div>

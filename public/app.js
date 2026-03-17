@@ -1,18 +1,19 @@
 // ============================================================
-// SUPABASE SETUP
+// SUPABASE SETUP (for DB only — auth is name+password)
 // ============================================================
 const SUPABASE_URL = 'https://pxhuoiizmqnonskovecf.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4aHVvaWl6bXFub25za292ZWNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3NTg5MzYsImV4cCI6MjA4OTMzNDkzNn0.r_jMC9z5p-xeOeUvu7H9D8FW33oaEHPqdu6ATXBZTd4';
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ============================================================
-// AUTH USERS — edit here to add/remove team members
+// TEAM ROSTER — edit here to add/remove members or change passwords
+// Password format: firstname + 123  (e.g. william123)
 // ============================================================
 const TEAM_USERS = [
-  { email: 'william@gi.com', name: 'William', role: 'admin', person: 'estrategista' },
-  { email: 'fabricio@gi.com', name: 'Fabrício', role: 'member', person: 'fabricio' },
-  { email: 'lucas@gi.com', name: 'Lucas', role: 'member', person: 'lucas' },
-  { email: 'gabriel@gi.com', name: 'Gabriel', role: 'member', person: 'gabriel' },
+  { name: 'William',  password: 'william123',  role: 'admin',  person: 'estrategista' },
+  { name: 'Fabrício', password: 'fabricio123', role: 'member', person: 'fabricio' },
+  { name: 'Lucas',    password: 'lucas123',    role: 'member', person: 'lucas' },
+  { name: 'Gabriel',  password: 'gabriel123',  role: 'member', person: 'gabriel' },
 ];
 
 // ============================================================
@@ -163,34 +164,31 @@ let currentOpenedTaskId = null;
 let currentUser = null;
 
 // ============================================================
-// AUTH
+// AUTH — simple name + password (no email needed)
 // ============================================================
-async function initAuth() {
-  const { data: { session } } = await supabase.auth.getSession();
-  if (session) {
-    handleLoggedIn(session.user);
-  } else {
-    showLogin();
+function initAuth() {
+  // Check if already logged in via localStorage
+  const saved = localStorage.getItem('gi-user');
+  if (saved) {
+    try {
+      const user = JSON.parse(saved);
+      // Validate saved user still exists in roster
+      const valid = TEAM_USERS.find(u => u.name === user.name && u.password === user.password);
+      if (valid) { handleLoggedIn(valid); return; }
+    } catch(e) {}
   }
-
-  supabase.auth.onAuthStateChange((_event, session) => {
-    if (session) handleLoggedIn(session.user);
-    else showLogin();
-  });
+  showLogin();
 }
 
-function handleLoggedIn(user) {
-  currentUser = user;
-  const teamMember = TEAM_USERS.find(u => u.email === user.email) || { name: user.email, role: 'member' };
-  currentUser.teamInfo = teamMember;
+function handleLoggedIn(member) {
+  currentUser = member;
+  localStorage.setItem('gi-user', JSON.stringify(member));
 
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app').style.display = 'flex';
 
   const userBadge = document.getElementById('user-badge');
-  if (userBadge) {
-    userBadge.textContent = `👤 ${teamMember.name}`;
-  }
+  if (userBadge) userBadge.textContent = `👤 ${member.name}`;
 
   loadData();
 }
@@ -201,28 +199,28 @@ function showLogin() {
   document.getElementById('app').style.display = 'none';
 }
 
-async function doLogin() {
-  const email = document.getElementById('login-email').value.trim();
-  const password = document.getElementById('login-password').value;
+function doLogin() {
+  const nameInput = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value.trim();
   const errEl = document.getElementById('login-error');
   errEl.textContent = '';
 
-  const btn = document.getElementById('login-btn');
-  btn.textContent = 'Entrando...';
-  btn.disabled = true;
+  // Case-insensitive name match
+  const member = TEAM_USERS.find(
+    u => u.name.toLowerCase() === nameInput.toLowerCase() && u.password === password
+  );
 
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
-  if (error) {
-    errEl.textContent = error.message === 'Invalid login credentials'
-      ? 'E-mail ou senha inválidos.'
-      : error.message;
-    btn.textContent = 'Entrar';
-    btn.disabled = false;
+  if (member) {
+    handleLoggedIn(member);
+  } else {
+    errEl.textContent = 'Nome ou senha incorretos.';
+    document.getElementById('login-password').value = '';
   }
 }
 
-async function doLogout() {
-  await supabase.auth.signOut();
+function doLogout() {
+  localStorage.removeItem('gi-user');
+  showLogin();
 }
 
 // ============================================================
