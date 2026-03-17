@@ -8,52 +8,71 @@
 <style>
 :root{--bg:#07070a;--s1:#121216;--s2:#1e1e24;--s3:#2b2b33;--accent:#2563eb;--accent-hover:#1d4ed8;--green:#10b981;--yellow:#f59e0b;--orange:#f97316;--red:#ef4444;--purple:#8b5cf6;--pink:#ec4899;--cyan:#06b6d4;--text:#f8fafc;--text2:#cbd5e1;--text3:#64748b;--border:#1e293b;--glass:rgba(18,18,22,0.65);--shadow:0 10px 15px -3px rgba(0,0,0,0.5),0 4px 6px -2px rgba(0,0,0,0.25)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.5;font-size:14px;background-image:radial-gradient(circle at top right,rgba(37,99,235,0.05) 0%,transparent 50%),radial-gradient(circle at bottom left,rgba(139,92,246,0.05) 0%,transparent 50%);background-attachment:fixed;min-height:100vh}
-::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--s3);border-radius:10px}
-::-webkit-scrollbar-thumb:hover{background:var(--text3)}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.5;font-size:14px;background-image:radial-gradient(circle at top right,rgba(37,99,235,0.08) 0%,transparent 50%),radial-gradient(circle at bottom left,rgba(139,92,246,0.08) 0%,transparent 50%);background-attachment:fixed;min-height:100vh}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--s3);border-radius:10px}
 a{color:var(--accent);text-decoration:none;transition:color .2s}a:hover{color:var(--accent-hover)}
 
-.app{display:flex;min-height:100vh}
-.sidebar{width:260px;background:var(--s1);border-right:1px solid var(--border);padding:1.5rem 0;position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:50;box-shadow:2px 0 10px rgba(0,0,0,0.2)}
-.sidebar-logo{padding:0 1.5rem 2rem;font-size:1.2rem;font-weight:800;display:flex;align-items:center;gap:.75rem;border-bottom:1px solid var(--border);margin-bottom:1.5rem;background:linear-gradient(90deg,#fff,#a1a1aa);-webkit-background-clip:text;color:transparent}
-.sidebar-logo span{color:var(--accent);-webkit-text-fill-color:var(--accent);text-shadow:0 0 20px rgba(37,99,235,0.4)}
-.sidebar-section{padding:.75rem 1.5rem;font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:var(--text3);font-weight:700;margin-top:.5rem}
-.sidebar-item{display:flex;align-items:center;gap:.75rem;padding:.6rem 1.5rem;cursor:pointer;color:var(--text2);font-size:.9rem;font-weight:500;transition:all .2s ease;border-left:3px solid transparent;position:relative}
-.sidebar-item:hover{background:var(--s2);color:var(--text)}
-.sidebar-item.active{background:linear-gradient(90deg,rgba(37,99,235,0.1) 0%,transparent 100%);color:var(--text);border-left-color:var(--accent);font-weight:600}
-.sidebar-badge{margin-left:auto;padding:.15rem .5rem;border-radius:12px;font-size:.65rem;font-weight:700;background:var(--s3);color:var(--text)}
+/* ─── LOGIN SCREEN ─── */
+#login-screen{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;align-items:center;justify-content:center;background-image:radial-gradient(circle at 30% 40%,rgba(37,99,235,0.1),transparent 50%),radial-gradient(circle at 70% 60%,rgba(139,92,246,0.08),transparent 50%)}
+.login-card{background:var(--s1);border:1px solid var(--border);border-radius:20px;padding:2.5rem;width:100%;max-width:420px;box-shadow:0 25px 50px rgba(0,0,0,0.6)}
+.login-logo{font-size:1.5rem;font-weight:800;margin-bottom:.5rem;background:linear-gradient(135deg,#fff,#a1a1aa);-webkit-background-clip:text;background-clip:text;color:transparent}
+.login-logo span{color:var(--accent);-webkit-text-fill-color:var(--accent)}
+.login-subtitle{color:var(--text3);font-size:.85rem;margin-bottom:2rem}
+.login-label{display:block;font-size:.8rem;font-weight:600;color:var(--text2);margin-bottom:.4rem}
+.login-input{width:100%;padding:.75rem 1rem;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:inherit;font-size:.9rem;outline:none;transition:all .2s;margin-bottom:1rem}
+.login-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,0.15)}
+.login-btn{width:100%;padding:.85rem;border-radius:8px;border:none;background:var(--accent);color:#fff;font-family:inherit;font-size:.95rem;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 15px rgba(37,99,235,0.3)}
+.login-btn:hover{background:var(--accent-hover);transform:translateY(-1px);box-shadow:0 8px 20px rgba(37,99,235,0.4)}
+.login-error{color:var(--red);font-size:.8rem;margin-top:.75rem;min-height:1.2em}
+.login-hint{margin-top:1.5rem;padding:1rem;background:rgba(37,99,235,0.05);border:1px solid rgba(37,99,235,0.15);border-radius:8px;font-size:.75rem;color:var(--text3);line-height:1.6}
 
-.main{margin-left:260px;flex:1;padding:2rem 3rem;max-width:1600px}
-.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:2.5rem;flex-wrap:wrap;gap:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid rgba(255,255,255,0.05)}
-.topbar h1{font-size:1.75rem;font-weight:800;letter-spacing:-.02em;background:linear-gradient(to right,#fff,#cbd5e1);-webkit-background-clip:text;color:transparent}
+/* ─── LAYOUT ─── */
+.app{display:flex;min-height:100vh}
+.sidebar{width:260px;background:var(--s1);border-right:1px solid var(--border);padding:1.5rem 0;position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:50;box-shadow:2px 0 10px rgba(0,0,0,0.2);display:flex;flex-direction:column}
+.sidebar-logo{padding:0 1.5rem 1.5rem;font-size:1.2rem;font-weight:800;display:flex;align-items:center;gap:.75rem;border-bottom:1px solid var(--border);margin-bottom:1.5rem;background:linear-gradient(90deg,#fff,#a1a1aa);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sidebar-logo span{color:var(--accent);-webkit-text-fill-color:var(--accent);text-shadow:0 0 20px rgba(37,99,235,0.4)}
+.sidebar-section{padding:.6rem 1.5rem;font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;color:var(--text3);font-weight:700;margin-top:.5rem}
+.sidebar-item{display:flex;align-items:center;gap:.75rem;padding:.6rem 1.5rem;cursor:pointer;color:var(--text2);font-size:.88rem;font-weight:500;transition:all .2s ease;border-left:3px solid transparent}
+.sidebar-item:hover{background:var(--s2);color:var(--text)}
+.sidebar-item.active{background:linear-gradient(90deg,rgba(37,99,235,0.12) 0%,transparent 100%);color:var(--text);border-left-color:var(--accent);font-weight:600}
+.sidebar-badge{margin-left:auto;padding:.15rem .5rem;border-radius:12px;font-size:.65rem;font-weight:700;background:var(--s3);color:var(--text)}
+.sidebar-user{margin-top:auto;padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.sidebar-user-name{font-size:.82rem;font-weight:600;color:var(--text2)}
+.sidebar-logout{background:none;border:none;color:var(--text3);cursor:pointer;font-size:.75rem;padding:.3rem .6rem;border-radius:6px;transition:all .2s;font-family:inherit}
+.sidebar-logout:hover{background:rgba(239,68,68,0.1);color:var(--red)}
+
+.main{margin-left:260px;flex:1;padding:2rem 2.5rem;max-width:1600px}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;flex-wrap:wrap;gap:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid rgba(255,255,255,0.05)}
+.topbar h1{font-size:1.6rem;font-weight:800;letter-spacing:-.02em;background:linear-gradient(to right,#fff,#cbd5e1);-webkit-background-clip:text;background-clip:text;color:transparent}
 .topbar-actions{display:flex;gap:.75rem}
-.btn{padding:.6rem 1.25rem;border-radius:8px;border:1px solid var(--border);background:var(--s1);color:var(--text);font-family:inherit;font-size:.85rem;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:.5rem;transition:all .2s cubic-bezier(0.4,0,0.2,1);box-shadow:0 1px 2px rgba(0,0,0,0.1)}
-.btn:hover{border-color:var(--text3);background:var(--s2);transform:translateY(-1px);box-shadow:0 4px 6px -1px rgba(0,0,0,0.1)}
+.btn{padding:.55rem 1.1rem;border-radius:8px;border:1px solid var(--border);background:var(--s1);color:var(--text);font-family:inherit;font-size:.85rem;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:.5rem;transition:all .2s cubic-bezier(0.4,0,0.2,1)}
+.btn:hover{border-color:var(--text3);background:var(--s2);transform:translateY(-1px)}
 .btn:active{transform:translateY(0)}
-.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 1px 3px rgba(37,99,235,0.4)}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 1px 3px rgba(37,99,235,0.3)}
 .btn-primary:hover{background:var(--accent-hover);border-color:var(--accent-hover);box-shadow:0 4px 12px rgba(37,99,235,0.3)}
-.btn-sm{padding:.4rem .8rem;font-size:.75rem}
+.btn-sm{padding:.35rem .8rem;font-size:.75rem}
 .btn-outline{background:transparent;border:1px solid var(--accent);color:var(--accent)}
 .btn-outline:hover{background:rgba(37,99,235,0.1)}
 
-/* CARDS */
-.grid{display:grid;gap:1.5rem;align-items:start}
-.grid-3{grid-template-columns:repeat(auto-fill,minmax(350px,1fr))}
-.grid-2{grid-template-columns:repeat(auto-fill,minmax(500px,1fr))}
+/* ─── CARDS & GRIDS ─── */
+.grid{display:grid;gap:1.25rem;align-items:start}
+.grid-3{grid-template-columns:repeat(auto-fill,minmax(340px,1fr))}
+.grid-2{grid-template-columns:repeat(auto-fill,minmax(480px,1fr))}
 .card{background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.05);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);transition:transform .2s ease,box-shadow .2s ease;display:flex;flex-direction:column}
-.card:hover{transform:translateY(-2px);box-shadow:0 20px 25px -5px rgba(0,0,0,0.5),0 8px 10px -6px rgba(0,0,0,0.2)}
+.card:hover{transform:translateY(-2px);box-shadow:0 20px 25px -5px rgba(0,0,0,0.5)}
 .card-header{padding:1rem 1.25rem;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.2)}
-.card-body{padding:1.25rem;flex:1;display:flex;flex-direction:column;gap:0.75rem}
-.card-title{font-size:1rem;font-weight:700;letter-spacing:-.01em}
+.card-body{padding:1.25rem;flex:1;display:flex;flex-direction:column;gap:.65rem}
+.card-title{font-size:.95rem;font-weight:700;letter-spacing:-.01em}
 
-/* TASKS */
-.task{display:flex;gap:.85rem;padding:1rem;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:rgba(255,255,255,0.02);transition:all .2s ease;cursor:pointer;align-items:flex-start}
-.task:hover{border-color:rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);transform:translateX(2px)}
-.task-status{flex-shrink:0;width:12px;height:12px;border-radius:50%;margin-top:4px;box-shadow:0 0 8px currentColor}
-.task-content{flex:1;min-width:0;display:flex;flex-direction:column;gap:0.4rem}
-.task-name{font-size:.9rem;font-weight:600;color:var(--text);line-height:1.4}
-.task-meta{display:flex;gap:.4rem;flex-wrap:wrap;align-items:center}
-.tag{padding:.15rem .5rem;border-radius:6px;font-size:.65rem;font-weight:700;white-space:nowrap;letter-spacing:.02em}
+/* ─── TASKS ─── */
+.task{display:flex;gap:.85rem;padding:.9rem;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.02);transition:all .2s ease;cursor:pointer;align-items:flex-start}
+.task:hover{border-color:rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);transform:translateX(2px)}
+.task[draggable=true]:active{opacity:.6;cursor:grabbing}
+.task-status{flex-shrink:0;width:11px;height:11px;border-radius:50%;margin-top:4px;box-shadow:0 0 6px currentColor}
+.task-content{flex:1;min-width:0;display:flex;flex-direction:column;gap:.35rem}
+.task-name{font-size:.88rem;font-weight:600;color:var(--text);line-height:1.4}
+.task-meta{display:flex;gap:.35rem;flex-wrap:wrap;align-items:center}
+.tag{padding:.12rem .45rem;border-radius:5px;font-size:.63rem;font-weight:700;white-space:nowrap;letter-spacing:.02em}
 .tag-blue{background:rgba(37,99,235,0.15);color:#60a5fa;border:1px solid rgba(37,99,235,0.2)}
 .tag-green{background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.2)}
 .tag-yellow{background:rgba(245,158,11,0.15);color:#fbbf24;border:1px solid rgba(245,158,11,0.2)}
@@ -63,106 +82,147 @@ a{color:var(--accent);text-decoration:none;transition:color .2s}a:hover{color:va
 .tag-pink{background:rgba(236,72,153,0.15);color:#f472b6;border:1px solid rgba(236,72,153,0.2)}
 .tag-cyan{background:rgba(6,182,212,0.15);color:#22d3ee;border:1px solid rgba(6,182,212,0.2)}
 .tag-gray{background:rgba(100,116,139,0.15);color:#94a3b8;border:1px solid rgba(100,116,139,0.2)}
-
-/* STATUS BADGES */
-.status-select{padding:.25rem .5rem;border-radius:6px;font-size:.7rem;font-weight:700;border:1px solid transparent;cursor:pointer;font-family:inherit;transition:all .2s;outline:none;width:auto}
-.status-select:hover{filter:brightness(1.1)}
+.status-select{padding:.22rem .45rem;border-radius:6px;font-size:.68rem;font-weight:700;border:1px solid transparent;cursor:pointer;font-family:inherit;transition:all .2s;outline:none;width:auto;appearance:none;text-align:center}
 .status-0{background:rgba(100,116,139,0.15);color:#94a3b8;border-color:rgba(100,116,139,0.2)}
 .status-1{background:rgba(245,158,11,0.15);color:#fbbf24;border-color:rgba(245,158,11,0.2)}
 .status-2{background:rgba(249,115,22,0.15);color:#fb923c;border-color:rgba(249,115,22,0.2)}
 .status-3{background:rgba(37,99,235,0.15);color:#60a5fa;border-color:rgba(37,99,235,0.2)}
 .status-4{background:rgba(16,185,129,0.15);color:#34d399;border-color:rgba(16,185,129,0.2)}
 
-/* STATS */
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.5rem;margin-bottom:2.5rem}
-.stat{background:var(--glass);border:1px solid rgba(255,255,255,0.05);border-radius:16px;padding:1.5rem;box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
-.stat::after{content:'';position:absolute;top:0;right:0;width:100px;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.02));transform:skewX(-20deg) translateX(50px)}
-.stat-value{font-size:2rem;font-weight:800;line-height:1;margin-bottom:.5rem;letter-spacing:-.03em}
-.stat-label{font-size:.75rem;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;font-weight:600}
+/* ─── KANBAN ─── */
+.kanban-board{display:flex;gap:1rem;overflow-x:auto;padding-bottom:1rem;align-items:flex-start}
+.kanban-col{min-width:280px;max-width:320px;flex-shrink:0;background:rgba(0,0,0,0.15);border:1px solid rgba(255,255,255,0.04);border-radius:14px;overflow:hidden;transition:border-color .2s}
+.kanban-col[ondrop]:hover{border-color:var(--accent)}
+.kanban-col-header{padding:.85rem 1rem;display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.2);font-size:.82rem;font-weight:700}
+.kanban-col-body{padding:.65rem;display:flex;flex-direction:column;gap:.5rem;min-height:120px}
 
-/* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);z-index:100;display:none;align-items:center;justify-content:center;padding:1rem}
+/* ─── STATS ─── */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1.25rem;margin-bottom:2rem}
+.stat{background:var(--glass);border:1px solid rgba(255,255,255,0.05);border-radius:16px;padding:1.25rem 1.5rem;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.stat::after{content:'';position:absolute;top:0;right:0;width:80px;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.02));transform:skewX(-20deg) translateX(40px)}
+.stat-value{font-size:1.9rem;font-weight:800;line-height:1;margin-bottom:.4rem;letter-spacing:-.03em}
+.stat-label{font-size:.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;font-weight:600}
+
+/* ─── MODAL ─── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:100;display:none;align-items:center;justify-content:center;padding:1rem}
 .modal-overlay.open{display:flex;animation:fadeIn .2s ease}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.modal{background:var(--s1);border:1px solid var(--border);border-radius:20px;max-width:700px;width:100%;max-height:90vh;overflow-y:auto;padding:0;box-shadow:0 25px 50px -12px rgba(0,0,0,0.6);transform:scale(0.98);transition:transform .2s cubic-bezier(0.34,1.56,0.64,1)}
-.modal-overlay.open .modal{transform:scale(1)}
+.modal{background:var(--s1);border:1px solid var(--border);border-radius:20px;max-width:700px;width:100%;max-height:90vh;overflow-y:auto;padding:0;box-shadow:0 25px 50px -12px rgba(0,0,0,0.6);animation:scaleIn .2s cubic-bezier(0.34,1.56,0.64,1)}
+@keyframes scaleIn{from{transform:scale(0.95)}to{transform:scale(1)}}
 .modal-header{padding:1.5rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:rgba(18,18,22,0.95);backdrop-filter:blur(10px);z-index:2;border-radius:20px 20px 0 0}
-.modal-header h3{font-size:1.1rem;font-weight:700}
-.modal-close{background:rgba(255,255,255,0.05);border:none;color:var(--text2);width:32px;height:32px;border-radius:50%;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.modal-close:hover{background:rgba(255,255,255,0.1);color:var(--text);transform:rotate(90deg)}
-.modal-body{padding:2rem 1.5rem}
-.modal-body h4{font-size:.9rem;font-weight:700;color:var(--accent);margin:1.5rem 0 .75rem;display:flex;align-items:center;gap:.5rem}
+.modal-header h3{font-size:1rem;font-weight:700}
+.modal-close{background:rgba(255,255,255,0.06);border:none;color:var(--text2);width:30px;height:30px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.modal-close:hover{background:rgba(255,255,255,0.12);color:var(--text);transform:rotate(90deg)}
+.modal-body{padding:1.5rem}
+.modal-body h4{font-size:.85rem;font-weight:700;color:var(--accent);margin:1.25rem 0 .6rem;display:flex;align-items:center;gap:.4rem}
 .modal-body h4:first-child{margin-top:0}
-.modal-body p,.modal-body li{font-size:.9rem;color:var(--text2);line-height:1.7}
+.modal-body p,.modal-body li{font-size:.88rem;color:var(--text2);line-height:1.7}
 .modal-body ul{padding-left:1.5rem}
-.modal-body .brief-block{background:rgba(0,0,0,0.2);border:1px solid var(--border);border-radius:12px;padding:1.25rem;margin:1rem 0;font-size:.85rem;border-left:4px solid var(--accent);line-height:1.6}
-.modal-body .legend-block{background:var(--s2);border-radius:12px;padding:1.25rem;margin:1rem 0;font-size:.85rem;color:var(--text);white-space:pre-wrap;line-height:1.7;border:1px solid var(--border)}
-.drive-link-container{background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.2);border-radius:12px;padding:1.25rem;margin-top:1.5rem}
+.modal-body .brief-block{background:rgba(0,0,0,0.25);border:1px solid var(--border);border-radius:12px;padding:1.25rem;margin:.75rem 0;font-size:.84rem;border-left:4px solid var(--accent);line-height:1.65;color:var(--text2)}
+.modal-body .legend-block{background:var(--s2);border-radius:12px;padding:1.25rem;margin:.75rem 0;font-size:.84rem;color:var(--text);white-space:pre-wrap;line-height:1.75;border:1px solid var(--border)}
+.drive-link-container{background:rgba(16,185,129,0.05);border:1px solid rgba(16,185,129,0.2);border-radius:12px;padding:1.25rem;margin-top:1.25rem}
 
-/* FORM */
-.form-group{margin-bottom:1.5rem}
-.form-label{display:block;font-size:.8rem;font-weight:600;color:var(--text2);margin-bottom:.5rem}
-input[type="text"],input[type="url"],input[type="date"],textarea,select{width:100%;padding:.75rem 1rem;background:rgba(0,0,0,0.2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:inherit;font-size:.9rem;transition:all .2s;outline:none;box-shadow:inset 0 2px 4px rgba(0,0,0,0.1)}
+/* ─── FORM ─── */
+.form-group{margin-bottom:1.25rem}
+.form-label{display:block;font-size:.78rem;font-weight:600;color:var(--text2);margin-bottom:.4rem}
+input[type="text"],input[type="url"],input[type="date"],textarea,select{width:100%;padding:.7rem 1rem;background:rgba(0,0,0,0.2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:inherit;font-size:.88rem;transition:all .2s;outline:none}
 input:focus,textarea:focus,select:focus{border-color:var(--accent);background:rgba(37,99,235,0.05);box-shadow:0 0 0 3px rgba(37,99,235,0.1)}
-textarea{min-height:100px;resize:vertical;line-height:1.5}
-select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a1a1aa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;padding-right:3rem}
+textarea{min-height:90px;resize:vertical;line-height:1.5}
+select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .85rem center;padding-right:2.5rem}
 
-/* CALENDAR */
+/* ─── CALENDAR ─── */
 .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:1.5rem}
-.cal-h{text-align:center;padding:.75rem;font-size:.75rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em}
-.cal-c{background:var(--glass);border:1px solid rgba(255,255,255,0.03);border-radius:12px;padding:.75rem;min-height:140px;font-size:.75rem;display:flex;flex-direction:column;gap:4px}
-.cal-c .day-num{font-weight:700;margin-bottom:.5rem;color:var(--text3);font-size:.85rem;border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:.5rem}
-.cal-c .cal-item{padding:.35rem .5rem;border-radius:6px;font-size:.7rem;font-weight:600;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:transform .15s;border:1px solid transparent}
+.cal-h{text-align:center;padding:.6rem;font-size:.7rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em}
+.cal-c{background:var(--glass);border:1px solid rgba(255,255,255,0.03);border-radius:12px;padding:.65rem;min-height:130px;font-size:.75rem;display:flex;flex-direction:column;gap:3px}
+.cal-c .day-num{font-weight:700;margin-bottom:.4rem;color:var(--text3);font-size:.82rem;border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:.4rem}
+.cal-c .cal-item{padding:.3rem .45rem;border-radius:6px;font-size:.67rem;font-weight:600;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:transform .15s}
 .cal-c .cal-item:hover{transform:scale(1.02);filter:brightness(1.1)}
 
-/* RESPONSIVE */
+/* ─── OVERVIEW SPLIT ─── */
+.overview-split{display:grid;grid-template-columns:1fr 280px;gap:1.5rem;align-items:start}
+.activity-panel{background:var(--glass);border:1px solid rgba(255,255,255,0.05);border-radius:16px;padding:1.25rem;box-shadow:var(--shadow)}
+.activity-panel h3{font-size:.85rem;font-weight:700;margin-bottom:1rem;color:var(--text2)}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:1100px){.overview-split{grid-template-columns:1fr}}
 @media(max-width:900px){
   .sidebar{display:none}
-  .main{margin-left:0}
+  .main{margin-left:0;padding:1.25rem}
   .grid-3{grid-template-columns:1fr}
   .grid-2{grid-template-columns:1fr}
-  .stats{flex-direction:column}
+  .stats{grid-template-columns:1fr 1fr}
   .mobile-nav{display:flex!important}
+  .overview-split{grid-template-columns:1fr}
 }
-.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--s1);border-top:1px solid var(--border);z-index:50;padding:.5rem;gap:.25rem;overflow-x:auto}
-.mobile-nav button{flex:1;min-width:70px;padding:.5rem;background:none;border:none;color:var(--text3);font-size:.6rem;font-family:inherit;cursor:pointer;border-radius:6px;text-align:center}
-.mobile-nav button.active{background:rgba(59,130,246,0.1);color:var(--accent)}
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--s1);border-top:1px solid var(--border);z-index:50;padding:.4rem;gap:.2rem;overflow-x:auto}
+.mobile-nav button{flex:1;min-width:60px;padding:.45rem;background:none;border:none;color:var(--text3);font-size:.58rem;font-family:inherit;cursor:pointer;border-radius:6px;text-align:center}
+.mobile-nav button.active{background:rgba(37,99,235,0.1);color:var(--accent)}
 
 .page{display:none}.page.active{display:block}
 
-/* NOTIFICATION */
-.toast{position:fixed;bottom:2rem;right:2rem;padding:.75rem 1.25rem;background:var(--green);color:#fff;border-radius:8px;font-size:.85rem;font-weight:500;z-index:200;display:none;animation:slideUp .3s ease}
+/* ─── TOAST ─── */
+.toast{position:fixed;bottom:2rem;right:2rem;padding:.7rem 1.25rem;background:var(--green);color:#fff;border-radius:10px;font-size:.85rem;font-weight:600;z-index:200;display:none;animation:slideUp .3s ease;box-shadow:0 8px 20px rgba(16,185,129,0.3)}
 @keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
 
-<div class="app">
+<!-- ════════════════════════════════════════
+     LOGIN SCREEN
+════════════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">🚀 <span>GI</span> Dashboard</div>
+    <p class="login-subtitle">Gestão de Impacto — Social Media 2026</p>
+    <label class="login-label">E-mail da equipe</label>
+    <input type="email" id="login-email" class="login-input" placeholder="seu@email.com" onkeydown="if(event.key==='Enter')doLogin()">
+    <label class="login-label">Senha</label>
+    <input type="password" id="login-password" class="login-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    <button id="login-btn" class="login-btn" onclick="doLogin()">Entrar</button>
+    <div id="login-error" class="login-error"></div>
+    <div class="login-hint">
+      <strong style="color:var(--text2)">Primeiro acesso?</strong><br>
+      Acesse o Supabase Dashboard para criar as senhas da equipe em:<br>
+      <span style="color:var(--accent)">Authentication → Users → Invite user</span>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     MAIN APP
+════════════════════════════════════════ -->
+<div class="app" id="app" style="display:none">
+
 <!-- SIDEBAR -->
 <div class="sidebar">
   <div class="sidebar-logo">🚀 <span>GI</span> Dashboard</div>
-  
+
   <div class="sidebar-section">Visão Geral</div>
   <div class="sidebar-item active" onclick="showPage('overview')">📊 Dashboard</div>
   <div class="sidebar-item" onclick="showPage('calendar')">📅 Calendário</div>
-  
+
   <div class="sidebar-section">Por Pessoa</div>
   <div class="sidebar-item" onclick="showPage('person-estrategista')">🧠 William (Estrategia)</div>
   <div class="sidebar-item" onclick="showPage('person-fabricio')">🎨 Fabrício (Design)</div>
   <div class="sidebar-item" onclick="showPage('person-lucas')">🎬 Lucas (Cortes)</div>
   <div class="sidebar-item" onclick="showPage('person-gabriel')">📽️ Gabriel (Vídeo)</div>
-  
+
   <div class="sidebar-section">Por Perfil / Foco</div>
   <div class="sidebar-item" onclick="showPage('profile-italo')">👤 @italorickes</div>
   <div class="sidebar-item" onclick="showPage('profile-leonardo')">👤 @leonardollo</div>
   <div class="sidebar-item" onclick="showPage('profile-gi')">🏢 @gestao.impacto</div>
   <div class="sidebar-item" onclick="showPage('ads')">🎯 Anúncios (ADS)</div>
-  
+
   <div class="sidebar-section">Ferramentas</div>
   <div class="sidebar-item" onclick="showPage('stories')">📱 Stories</div>
   <div class="sidebar-item" onclick="showPage('briefs')">📋 Briefings</div>
   <div class="sidebar-item" onclick="showPage('add-task')">➕ Nova Tarefa</div>
   <div class="sidebar-item" onclick="showPage('comments')">💬 Comentários</div>
+
+  <div class="sidebar-user">
+    <span class="sidebar-user-name" id="user-badge">👤 —</span>
+    <button class="sidebar-logout" onclick="doLogout()">Sair</button>
+  </div>
 </div>
 
 <!-- MOBILE NAV -->
@@ -179,42 +239,46 @@ select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%
 <!-- MAIN -->
 <div class="main">
 
-<!-- PAGE: OVERVIEW -->
+<!-- OVERVIEW -->
 <div class="page active" id="page-overview">
   <div class="topbar">
-    <div><h1>Dashboard — Semana 1</h1><p style="color:var(--text3);font-size:.8rem">Gestão de Impacto | Social Media 2026</p></div>
+    <div><h1>Dashboard — Semana 1</h1><p style="color:var(--text3);font-size:.8rem;margin-top:.25rem">Gestão de Impacto | Social Media 2026</p></div>
     <div class="topbar-actions">
       <button class="btn" onclick="showPage('add-task')">➕ Nova Tarefa</button>
       <button class="btn btn-primary" onclick="syncData()">🔄 Sincronizar</button>
     </div>
   </div>
-
   <div class="stats" id="stats-area"></div>
-
-  <div class="grid grid-3" id="overview-tasks"></div>
+  <div class="overview-split">
+    <div class="grid grid-3" id="overview-tasks"></div>
+    <div class="activity-panel">
+      <h3>⚡ Atividade Recente</h3>
+      <div id="activity-feed"></div>
+    </div>
+  </div>
 </div>
 
-<!-- PAGE: CALENDAR -->
+<!-- CALENDAR -->
 <div class="page" id="page-calendar">
   <div class="topbar"><h1>📅 Calendário Semanal</h1></div>
   <div class="cal" id="calendar-grid"></div>
 </div>
 
-<!-- PERSON PAGES -->
+<!-- PERSON PAGES — Kanban view -->
 <div class="page" id="page-person-estrategista">
-  <div class="topbar"><h1>🧠 Controle do William (Estrategista)</h1></div>
+  <div class="topbar"><h1>🧠 Kanban do William (Estrategista)</h1></div>
   <div id="tasks-estrategista"></div>
 </div>
 <div class="page" id="page-person-fabricio">
-  <div class="topbar"><h1>🎨 Tarefas do Fabrício (Designer)</h1></div>
+  <div class="topbar"><h1>🎨 Kanban do Fabrício (Designer)</h1></div>
   <div id="tasks-fabricio"></div>
 </div>
 <div class="page" id="page-person-lucas">
-  <div class="topbar"><h1>🎬 Tarefas do Lucas (Cortes)</h1></div>
+  <div class="topbar"><h1>🎬 Kanban do Lucas (Cortes)</h1></div>
   <div id="tasks-lucas"></div>
 </div>
 <div class="page" id="page-person-gabriel">
-  <div class="topbar"><h1>📽️ Tarefas do Gabriel (Vídeos)</h1></div>
+  <div class="topbar"><h1>📽️ Kanban do Gabriel (Vídeos)</h1></div>
   <div id="tasks-gabriel"></div>
 </div>
 
@@ -252,14 +316,14 @@ select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%
 <!-- BRIEFS -->
 <div class="page" id="page-briefs">
   <div class="topbar"><h1>📋 Briefings Completos</h1></div>
-  <p style="color:var(--text2);margin-bottom:1rem">Clique em qualquer tarefa no Dashboard para ver o briefing completo com legenda, direção visual e referências do livro.</p>
+  <p style="color:var(--text2);margin-bottom:1.5rem;font-size:.9rem">Clique em qualquer tarefa para ver o briefing completo com legenda e direção visual.</p>
   <div class="grid grid-3" id="all-briefs"></div>
 </div>
 
 <!-- ADD TASK -->
 <div class="page" id="page-add-task">
   <div class="topbar"><h1>➕ Nova Tarefa</h1></div>
-  <div class="card" style="max-width:600px">
+  <div class="card" style="max-width:580px">
     <div class="card-body">
       <div class="form-group">
         <label class="form-label">Título da tarefa</label>
@@ -295,9 +359,9 @@ select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%
       <div class="form-group">
         <label class="form-label">Formato</label>
         <select id="new-format">
-          <option value="reels">Reels (corte)</option><option value="carrossel">Carrossel</option>
-          <option value="frase">Post de frase</option><option value="fotos">Fotos + legenda</option>
-          <option value="stories">Stories</option><option value="outro">Outro</option>
+          <option>Reels (corte)</option><option>Carrossel</option>
+          <option>Post de frase</option><option>Fotos + legenda</option>
+          <option>Stories</option><option>Outro</option>
         </select>
       </div>
       <div class="form-group">
@@ -312,7 +376,7 @@ select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%
 <!-- COMMENTS -->
 <div class="page" id="page-comments">
   <div class="topbar"><h1>💬 Comentários da Equipe</h1></div>
-  <div class="card" style="max-width:600px;margin-bottom:1rem">
+  <div class="card" style="max-width:560px;margin-bottom:1.5rem">
     <div class="card-body">
       <div class="form-group">
         <label class="form-label">Seu nome</label>
@@ -341,15 +405,13 @@ select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%
     <div class="modal-body" id="modal-body"></div>
     <div id="modal-drive-section" style="padding:0 1.5rem 2rem;">
       <div class="drive-link-container">
-        <h4 style="margin:0 0 .75rem 0;color:var(--green)">☁️ Material no Google Drive</h4>
-        <p style="font-size:.8rem;color:var(--text2);margin-bottom:1rem">Cole aqui o link do Drive com o material final para aprovação ou download rápido.</p>
+        <h4 style="margin:0 0 .65rem 0;color:var(--green);font-size:.88rem">☁️ Material no Google Drive</h4>
+        <p style="font-size:.8rem;color:var(--text2);margin-bottom:.85rem">Cole aqui o link do Drive com o material final para aprovação ou download rápido.</p>
         <div style="display:flex;gap:.5rem">
-          <input type="url" id="task-drive-url" placeholder="Ex: https://drive.google.com/drive/folders/..." style="flex:1;background:var(--s1)">
-          <button class="btn btn-primary" onclick="saveDriveUrl()">Salvar Link</button>
+          <input type="url" id="task-drive-url" placeholder="https://drive.google.com/..." style="flex:1;background:var(--s2)">
+          <button class="btn btn-primary btn-sm" onclick="saveDriveUrl()">Salvar</button>
         </div>
-        <div id="task-current-drive-btn" style="margin-top:1rem;display:none">
-          <!-- Populated by JS -->
-        </div>
+        <div id="task-current-drive-btn" style="margin-top:.85rem;display:none"></div>
       </div>
     </div>
   </div>
@@ -357,520 +419,8 @@ select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%
 
 <div class="toast" id="toast"></div>
 
-<script>
-// ============================================================
-// DATA: All 21 tasks for Week 1
-// ============================================================
-const TASKS = [
-  // @ITALORICKES
-  {id:"it-seg",profile:"italo",profileLabel:"@italorickes",day:"seg",dayLabel:"Segunda",
-   format:"Reels (corte)",papel:"ATRAÇÃO",person:"lucas",personLabel:"Lucas",
-   title:"Reels — \"O problema nunca foi o teu time\"",
-   tagColor:"red",
-   brief:"Buscar no acervo trecho do Ítalo falando sobre liderança ou empresário que centraliza tudo. Frases-chave: \"o problema não é o time\", \"você lidera no achismo\". Ref livro p.6: \"resistência do colaborador é sinal de falta de empatia\".",
-   edição:"9:16 vertical. Texto 1,5s: \"O PROBLEMA NUNCA FOI O TEU TIME\". Subtítulos automáticos. Música lo-fi vol 15-20% entra no seg 3. Tela final: logo GI + @italorickes + \"Segue pra mais\".",
-   legenda:"O problema nunca foi o teu time.\n\nÉ duro de ouvir, mas precisa ser dito: se tu não sabe liderar cada perfil de pessoa de um jeito diferente, tu vai continuar perdendo gente boa e achando que \"ninguém presta\".\n\nLobo precisa de estrutura. Gato precisa de conexão. Tubarão precisa de autonomia. Águia precisa de liberdade.\n\nLiderar todo mundo igual é o erro mais caro que um empresário comete.\n\nSalva esse vídeo. Manda pro teu sócio.\n\nAmanhã eu explico os 4 perfis em detalhe. 🐺🐱🦈🦅"},
-
-  {id:"it-ter",profile:"italo",profileLabel:"@italorickes",day:"ter",dayLabel:"Terça",
-   format:"Carrossel 8 slides",papel:"AUTORIDADE",person:"fabricio",personLabel:"Fabrício",
-   title:"Carrossel — Perfis Comportamentais (Diagnóstico Real)",
-   tagColor:"blue",
-   brief:"8 slides. Fundo escuro, tipografia branca bold. Acento laranja GI. Slide 1: capa \"DESCUBRA SE VOCÊ É LOBO, GATO, TUBARÃO OU ÁGUIA\". Slides 3-6: um perfil por slide com cor própria. Slide 7: time equilibrado. Slide 8: CTA.",
-   edição:"Design: 1080x1350px. Logo GI canto inferior cada slide. Minimalista, impactante.",
-   legenda:"Esse é o conhecimento que mudou a liderança de centenas de empresários no Sul.\n\n4 perfis. 4 formas de liderar. Nenhuma igual.\n\n🐺 Lobo — estrutura e consistência\n🐱 Gato — conexão e pertencimento\n🦈 Tubarão — resultado e velocidade\n🦅 Águia — visão e liberdade\n\nQuando tu entende isso, para de achar que o time é o problema e começa a LIDERAR de verdade.\n\nQual perfil tu é? Comenta aqui 👇\n\n💾 Salva pra consultar.\n📤 Manda pro teu sócio.\n\n#DiagnósticoReal toda terça aqui no perfil."},
-
-  {id:"it-qua",profile:"italo",profileLabel:"@italorickes",day:"qua",dayLabel:"Quarta",
-   format:"Reels (corte)",papel:"AUTORIDADE",person:"lucas",personLabel:"Lucas",
-   title:"Reels — Ferramenta: PNL aplicada à liderança",
-   tagColor:"orange",
-   brief:"Buscar corte do Ítalo ensinando PNL: \"o mapa não é o território\", \"não existe fracasso, apenas resultado\", ou sobre feedback. Ref livro p.6. Trecho prático com passo-a-passo, 30-45s.",
-   edição:"Texto 0-2s: \"A TÉCNICA QUE MUDA COMO VOCÊ SE COMUNICA COM O TIME\". Quando falar conceito-chave, aparece escrito destacado. Subtítulos. Tela final: \"Ferramenta da Semana | @italorickes\".",
-   legenda:"Ferramenta da Semana: PNL APLICADA À LIDERANÇA\n\nUm dos pressupostos mais poderosos que a gente ensina na Imersão GI:\n\n\"A responsabilidade da comunicação é SEMPRE do comunicador.\"\n\nSe o teu funcionário não entendeu, o problema não é ele. É a forma como tu comunicou.\n\nIsso muda TUDO.\n\nTesta essa semana: antes de cobrar alguém, pergunta primeiro \"eu fui claro o suficiente?\"\n\n💾 Salva. Toda quarta tem ferramenta nova aqui."},
-
-  {id:"it-qui",profile:"italo",profileLabel:"@italorickes",day:"qui",dayLabel:"Quinta",
-   format:"Fotos + legenda",papel:"CONEXÃO",person:"fabricio",personLabel:"Fabrício",
-   title:"Post storytelling — Bastidores do Ítalo",
-   tagColor:"pink",
-   brief:"3-4 fotos reais do Ítalo em bastidor. Fabrício ajusta crop, cor quente/desaturada, logo GI discreto. Formato 1080x1350.",
-   edição:"Edição leve de foto. Sem design elaborado — é pra parecer real e espontâneo.",
-   legenda:"Uma coisa que eu quase nunca conto aqui:\n\nAntes de cada Imersão GI eu fico em silêncio por uns 20 minutos. Sozinho.\n\nNão é ritual. Não é meditação sofisticada. É medo mesmo. Medo de não conseguir entregar o que aquelas pessoas precisam.\n\nPorque eu sei o que tá em jogo. Tem empresário ali que dirigiu horas pra estar naquela sala. Que tá há meses sem dormir direito.\n\nE eu escolhi estar ali pra dizer: \"eu sei o que tu tá passando. E tem saída.\"\n\nSe tu tá nesse momento de caos, de dúvida, de exaustão — segue aqui. A gente vai construir junto. 🤝"},
-
-  {id:"it-sex",profile:"italo",profileLabel:"@italorickes",day:"sex",dayLabel:"Sexta",
-   format:"Reels (depoimento)",papel:"COMUNIDADE",person:"lucas",personLabel:"Lucas",
-   title:"Reels — Caso de Impacto (depoimento aluno)",
-   tagColor:"purple",
-   brief:"Buscar depoimento de aluno sobre TRANSFORMAÇÃO PESSOAL ou LIDERANÇA. Priorizar quem fala com emoção e cita resultados. Idealmente mencione: \"eu achava que o problema era o time\" ou \"mudei como líder\".",
-   edição:"0-3s: tela preta \"ELE ACHAVA QUE O PROBLEMA ERA O TIME\". 3-45s: depoimento legendado. Dados na tela se mencionar números. 45-55s: montagem energia/aplausos. 55-60s: tela final. Música emocional crescente.",
-   legenda:"Caso de Impacto da semana.\n\n[Nome], [cidade]. [Segmento].\n\nChegou na Imersão GI achando que precisava trocar o time inteiro. Saiu entendendo que o que precisava mudar era a forma como ele liderava.\n\nA gente não ensina teoria. Entrega método que funciona na segunda-feira.\n\nToda sexta tem caso real aqui.\n\nQuer ser o próximo? Manda 'EU QUERO' no direct do @gestao.impacto 📩"},
-
-  {id:"it-sab",profile:"italo",profileLabel:"@italorickes",day:"sab",dayLabel:"Sábado",
-   format:"Post de frase",papel:"RETENÇÃO",person:"fabricio",personLabel:"Fabrício",
-   title:"Frase — \"Se a tua empresa para quando tu sai...\"",
-   tagColor:"cyan",
-   brief:"Fundo preto (#0a0e1a). Texto branco, bold, centralizado, grande. Logo GI canto inferior. Zero foto, zero poluição. 1080x1350.",
-   edição:"FRASE: \"Se a tua empresa para quando tu sai,\\ntu não tem uma empresa.\\nTu tem um emprego que tu mesmo criou.\"",
-   legenda:"Lê de novo. Devagar.\n\nSe bateu, salva e manda pra alguém que precisa ouvir isso hoje.\n\nBom sábado. Descansa, mas não para de pensar grande. 🧠"},
-
-  {id:"it-dom",profile:"italo",profileLabel:"@italorickes",day:"dom",dayLabel:"Domingo",
-   format:"Carrossel 5 slides",papel:"CONVERSÃO",person:"fabricio",personLabel:"Fabrício",
-   title:"Carrossel — Mini-LP da Imersão GI",
-   tagColor:"green",
-   brief:"5 slides. Mini-página de vendas. S1: provocação. S2: o ciclo que prende o empresário + 4 pilares. S3: o que leva em 2 dias. S4: 3 depoimentos curtos. S5: CTA com data/cidade/link.",
-   edição:"Design premium, sóbrio. Fundo escuro. Formato 1080x1350.",
-   legenda:"Uma semana inteira de conteúdo de graça aqui no perfil.\n\nImagina o que acontece em 2 dias de imersão presencial.\n\nPróxima turma: [DATA] em [CIDADE].\n\nManda 'QUERO' no direct do @gestao.impacto ou clica no link da bio.\n\nA transformação começa quando o dono decide mudar. 🔥"},
-
-  // @LEONARDOLLO
-  {id:"le-seg",profile:"leonardo",profileLabel:"@leonardollo",day:"seg",dayLabel:"Segunda",
-   format:"Reels (corte)",papel:"ATRAÇÃO",person:"lucas",personLabel:"Lucas",
-   title:"Reels — \"Empresa sem processo = emprego disfarçado\"",
-   tagColor:"red",
-   brief:"Buscar corte do Leonardo sobre PROCESSOS ou caos operacional. Ref livro p.41: \"Nenhuma organização se desenvolve sem lastro firme.\" Qualquer confrontação direta sobre gestão.",
-   edição:"Texto: \"EMPRESA SEM PROCESSO = EMPREGO DISFARÇADO\". Subtítulos. Trilha. Tela final @leonardollo.",
-   legenda:"Isso aqui eu falei pra uma sala cheia de empresários na última Imersão GI.\n\nA reação? Silêncio. Porque dói ouvir a verdade.\n\nSe tua empresa depende 100% de ti pra funcionar, tu não tem uma empresa. Tu criou um emprego pra ti mesmo.\n\nA saída? Processo. Padronização. Rotina. Indicador.\n\nNão é sexy. Mas é o que funciona.\n\nSalva e manda pra aquele empresário que vive no caos. 📤"},
-
-  {id:"le-ter",profile:"leonardo",profileLabel:"@leonardollo",day:"ter",dayLabel:"Terça",
-   format:"Carrossel 8 slides",papel:"AUTORIDADE",person:"fabricio",personLabel:"Fabrício",
-   title:"Carrossel — 8 Desperdícios Lean (Diagnóstico Real)",
-   tagColor:"blue",
-   brief:"8 slides sobre os 8 desperdícios do Lean. Ref livro p.42-50. Acento laranja (cor Processos). S1: capa. S2: contexto Lean. S3-7: desperdícios. S8: CTA.",
-   edição:"1080x1350. Fundo escuro. Identidade visual GI.",
-   legenda:"8 desperdícios que tão comendo o lucro da tua empresa e tu nem sabe.\n\nO sistema Lean mapeou esses 8 ralos por onde o dinheiro escorre.\n\nSalva pra consultar. Manda pro teu sócio.\n\nQual desperdício tu mais identificou? 👇\n\nToda terça tem Diagnóstico Real aqui. 🔧"},
-
-  {id:"le-qua",profile:"leonardo",profileLabel:"@leonardollo",day:"qua",dayLabel:"Quarta",
-   format:"Reels (corte)",papel:"AUTORIDADE",person:"lucas",personLabel:"Lucas",
-   title:"Reels — Ferramenta: OKR",
-   tagColor:"orange",
-   brief:"Buscar corte do Leonardo ensinando OKR. Ref livro p.73: \"Eu vou [objetivo] medido por [resultado-chave]\". Se não tiver OKR, buscar PDCA (p.46) ou Pareto (p.51).",
-   edição:"Texto: \"A FERRAMENTA QUE O GOOGLE USA E TUA EMPRESA PRECISA\". Quando falar fórmula, aparece: \"EU VOU ___ MEDIDO POR ___\". 30-50s.",
-   legenda:"Ferramenta da Semana: OKR 🎯\n\nA fórmula:\n'Eu vou [OBJETIVO] medido por [RESULTADO-CHAVE]'\n\nExemplo:\n→ Eu vou aumentar a rentabilidade medido pelo aumento de receita em 10% e redução de custos em 3%.\n\nSem indicador, não tem gestão. Tem adivinhação.\n\nSalva. Toda quarta tem ferramenta nova. 🔧"},
-
-  {id:"le-qui",profile:"leonardo",profileLabel:"@leonardollo",day:"qui",dayLabel:"Quinta",
-   format:"Fotos + legenda",papel:"CONEXÃO",person:"fabricio",personLabel:"Fabrício",
-   title:"Post storytelling — Bastidores do Leonardo",
-   tagColor:"pink",
-   brief:"3-4 fotos reais do Leonardo. Bastidor, com equipe, com Ítalo, momento espontâneo. Fabrício ajusta crop e cor.",
-   edição:"Leve. Parecer real.",
-   legenda:"Vou contar uma coisa que pouca gente sabe.\n\nAntes do Gestão de Impacto existir como metodologia, era só eu e o @italorickes testando coisas. Errando. Refazendo. Sem equipe, sem estrutura, sem certeza.\n\nA diferença é que a gente não parou.\n\nPor isso que quando alguém pergunta \"o GI funciona?\" eu digo: funciona porque a gente viveu tudo isso antes de ensinar.\n\nNão é teoria. É lastro.\n\nSe tu tá no começo — segue aqui. A gente construiu o GI pra gente como tu. 🤝"},
-
-  {id:"le-sex",profile:"leonardo",profileLabel:"@leonardollo",day:"sex",dayLabel:"Sexta",
-   format:"Reels (depoimento)",papel:"COMUNIDADE",person:"lucas",personLabel:"Lucas",
-   title:"Reels — Caso de Impacto (depoimento aluno)",
-   tagColor:"purple",
-   brief:"Buscar depoimento sobre PROCESSOS, VENDAS ou RESULTADO FINANCEIRO. Priorizar quem cita números.",
-   edição:"Mesmo padrão: tela inicial com gancho. Depoimento legendado. Dados na tela. Montagem final. 40-60s.",
-   legenda:"Caso de Impacto da semana.\n\n[Nome], [cidade]. [Segmento].\n\nAntes do GI: sem processo, 14h/dia, sem previsibilidade.\nDepois: [resultado concreto].\n\nMétodo. Ferramenta. Execução.\n\nQuer ser o próximo? Manda 'EU QUERO' no direct do @gestao.impacto 📩"},
-
-  {id:"le-sab",profile:"leonardo",profileLabel:"@leonardollo",day:"sab",dayLabel:"Sábado",
-   format:"Post de frase",papel:"RETENÇÃO",person:"fabricio",personLabel:"Fabrício",
-   title:"Frase — Citação do livro GI sobre processos",
-   tagColor:"cyan",
-   brief:"Fundo preto. Texto grande. FRASE: \"Nenhuma organização se desenvolve sem lastro firme. Ter processos claros e enxutos é um símbolo de respeito com o cliente.\" (Livro GI, p.41)",
-   edição:"Mesmo padrão do Ítalo. Minimalista.",
-   legenda:"Direto do livro da Imersão Gestão de Impacto.\n\nSe fez sentido, compartilha. Bom sábado. 🧠"},
-
-  {id:"le-dom",profile:"leonardo",profileLabel:"@leonardollo",day:"dom",dayLabel:"Domingo",
-   format:"Reels (cinematográfico)",papel:"CONVERSÃO",person:"lucas",personLabel:"Lucas",
-   title:"Reels — Trailer cinematográfico da Imersão",
-   tagColor:"green",
-   brief:"Montagem 20-30s com cenas épicas: plateia, palco, networking, aplausos. Zero narração — só imagem + música + texto na tela.",
-   edição:"4-5 cenas de 3-4s. Música épica crescente. Textos: MENTALIDADE ✓ → PESSOAS ✓ → PROCESSOS ✓ → VENDAS ✓ → [DATA] → LINK NA BIO",
-   legenda:"Isso é a Imersão Gestão de Impacto.\n\n2 dias. 4 pilares. Ferramentas pra segunda-feira.\n\nPróxima turma: [DATA] em [CIDADE].\n\nManda 'QUERO' no direct do @gestao.impacto.\n\nA mudança começa quando o dono decide. 🔥"},
-
-  // @GESTAO.IMPACTO
-  {id:"gi-seg",profile:"gi",profileLabel:"@gestao.impacto",day:"seg",dayLabel:"Segunda",
-   format:"Reels (montagem)",papel:"ATRAÇÃO",person:"lucas",personLabel:"Lucas",
-   title:"Reels — Trailer cinematográfico GI (25-30s)",
-   tagColor:"red",
-   brief:"\"Trailer de filme\" do GI. 6-8 cenas de 3-4s. Ordem: pergunta provocativa → cenas crescendo → dados de impacto → CTA. Buscar as cenas mais bonitas visualmente do acervo.",
-   edição:"0-2s: tela preta \"E SE EXISTISSE UM MÉTODO...\" → MENTALIDADE → PESSOAS → PROCESSOS → VENDAS → \"[X]+ EMPRESAS TRANSFORMADAS\" → logo GI → CTA. Música cinematográfica épica.",
-   legenda:"Destravando mentalidades. Liderando pessoas. Gerenciando processos. Multiplicando vendas.\n\nIsso é a Imersão Gestão de Impacto.\n\nPróxima turma: [DATA] em [CIDADE].\nLink na bio. 🔗\n\nMarca aqui o empresário que precisa conhecer o GI 👇"},
-
-  {id:"gi-ter",profile:"gi",profileLabel:"@gestao.impacto",day:"ter",dayLabel:"Terça",
-   format:"Carrossel 10 slides",papel:"AUTORIDADE",person:"fabricio",personLabel:"Fabrício",
-   title:"Carrossel — Os 4 Pilares do Método GI",
-   tagColor:"blue",
-   brief:"10 slides. O carrossel mais importante do perfil institucional. Apresentação oficial da metodologia. Design premium, sóbrio. S1: capa. S2: por que 4 pilares. S3-4: Mentalidade. S5-6: Pessoas. S7-8: Processos. S9: Vendas. S10: CTA.",
-   edição:"1080x1350. Paleta escura com laranja GI. Bonito o suficiente pra compartilhar no story.",
-   legenda:"Esse carrossel é o resumo do que centenas de empresários já viveram na Imersão Gestão de Impacto.\n\n🧠 Mentalidade — o dono muda primeiro\n👥 Pessoas — liderar de verdade\n⚙️ Processos — sair do caos\n💰 Vendas — vender com método\n\nSalva. Manda pro teu sócio. Link na bio.\n\nTransformação. Resultado. Conexão. 🔥"},
-
-  {id:"gi-qua",profile:"gi",profileLabel:"@gestao.impacto",day:"qua",dayLabel:"Quarta",
-   format:"Reels (corte mentor)",papel:"AUTORIDADE",person:"lucas",personLabel:"Lucas",
-   title:"Reels — Corte do Ítalo sobre comunicação/PNL",
-   tagColor:"orange",
-   brief:"Corte do ÍTALO (alterna com Leonardo a cada semana). Buscar trecho ensinando comunicação, PNL ou liderança. Ref livro p.6.",
-   edição:"0-2s: \"O ERRO QUE TODO LÍDER COMETE\". Subtítulos. Tela final: \"Ítalo Rickes | @gestao.impacto | Siga @italorickes\".",
-   legenda:"A responsabilidade da comunicação é SEMPRE do comunicador.\n\nSe teu funcionário não entendeu, o problema não é ele.\n\nSiga o @italorickes pra mais conteúdo de Mentalidade e Liderança.\n\nSalva e aplica amanhã. 💾"},
-
-  {id:"gi-qui",profile:"gi",profileLabel:"@gestao.impacto",day:"qui",dayLabel:"Quinta",
-   format:"Fotos + legenda",papel:"CONEXÃO",person:"fabricio",personLabel:"Fabrício",
-   title:"Post — Time GI nos bastidores",
-   tagColor:"pink",
-   brief:"4-5 fotos do time GI: equipe reunida, montagem de evento, momentos espontâneos, Leonardo e Ítalo juntos em bastidor.",
-   edição:"Crop e cor. Logo discreto.",
-   legenda:"Por trás de cada Imersão GI tem um time que acredita que transformar uma empresa é transformar vidas.\n\nQuando a gente diz que o GI é sobre Pessoas, não é só sobre o teu time. É sobre o nosso também.\n\nNinguém faz nada sozinho. Esse é o ponto.\n\nMarca alguém que precisa conhecer essa energia 👇"},
-
-  {id:"gi-sex",profile:"gi",profileLabel:"@gestao.impacto",day:"sex",dayLabel:"Sexta",
-   format:"Reels (compilado)",papel:"COMUNIDADE",person:"lucas",personLabel:"Lucas",
-   title:"Reels — Mural de Impacto (6-8 depoimentos)",
-   tagColor:"purple",
-   brief:"Compilado de 6-8 depoimentos curtos de alunos diferentes. 5-8s por pessoa. Só a frase mais impactante de cada um. Nome + cidade na tela.",
-   edição:"0-3s: \"O QUE ELES DIZEM SOBRE O GI\". 3-40s: depoimentos em sequência (corte seco). 40-50s: montagem energia. 50-55s: dados + CTA + logo. Música emocional crescente.",
-   legenda:"A gente não precisa te convencer. Eles convencem por nós.\n\nToda sexta: Mural de Impacto — rostos e histórias reais.\n\nQuer ser o próximo? Link na bio ou manda 'EU QUERO' no direct.\n\nTransformação. Resultado. Conexão. 🔥"},
-
-  {id:"gi-sab",profile:"gi",profileLabel:"@gestao.impacto",day:"sab",dayLabel:"Sábado",
-   format:"Post de frase",papel:"RETENÇÃO",person:"fabricio",personLabel:"Fabrício",
-   title:"Frase — \"A mudança começa quando o dono muda primeiro\"",
-   tagColor:"cyan",
-   brief:"Fundo preto. Logo GI sutil. FRASE: \"A mudança começa quando o dono muda primeiro.\"",
-   edição:"Minimalista. Pode ter chevrons do logo como textura 5% opacidade.",
-   legenda:"A essência do Gestão de Impacto em uma frase.\n\nSe fez sentido, compartilha no story e marca a gente.\n\nBom sábado. 🧡"},
-
-  {id:"gi-dom",profile:"gi",profileLabel:"@gestao.impacto",day:"dom",dayLabel:"Domingo",
-   format:"Carrossel 6 slides",papel:"CONVERSÃO",person:"fabricio",personLabel:"Fabrício",
-   title:"Carrossel — Mini Landing Page da Imersão",
-   tagColor:"green",
-   brief:"6 slides = mini-página de vendas. S1: provocação. S2: o que é. S3: pra quem é. S4: o que leva. S5: depoimentos. S6: CTA final com data/cidade.",
-   edição:"Design premium. O mais importante da semana em conversão.",
-   legenda:"Essa imersão já transformou [X] empresas no RS e SC.\n\nNão é motivação. É transformação real.\n\nPróxima turma: [DATA] em [CIDADE].\n\n1️⃣ Link na bio\n2️⃣ Manda 'QUERO' no direct\n3️⃣ WhatsApp [número]\n\nA última turma lotou em [X] dias.\n\nQuem precisa tá nessa sala? Marca aqui 👇"}
-];
-
-const STATUSES = ['Não iniciado','Em produção','Em revisão','Aprovado','Postado'];
-const DAYS_ORDER = ['seg','ter','qua','qui','sex','sab','dom'];
-const DAYS_FULL = {seg:'Segunda',ter:'Terça',qua:'Quarta',qui:'Quinta',sex:'Sexta',sab:'Sábado',dom:'Domingo'};
-const PROFILE_COLORS = {italo:'var(--purple)',leonardo:'var(--accent)',gi:'var(--green)',ads:'var(--orange)'};
-
-let state = {statuses:{},driveUrls:{},customTasks:[],comments:[]};
-
-// ============================================================
-// STORAGE
-// ============================================================
-async function loadData(){
-  try{
-    const r = await fetch('/api/tasks');
-    const j = await r.json();
-    if(j.success && j.data){
-      state = {...state,...j.data};
-    }
-  }catch(e){
-    const saved = localStorage.getItem('gi-dashboard');
-    if(saved) state = JSON.parse(saved);
-  }
-  render();
-}
-
-async function saveData(){
-  localStorage.setItem('gi-dashboard', JSON.stringify(state));
-  try{
-    await fetch('/api/tasks',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({action:'full_save',...state})
-    });
-  }catch(e){}
-}
-
-async function syncData(){
-  await loadData();
-  showToast('Dados sincronizados!');
-}
-
-function getStatus(taskId){
-  return state.statuses[taskId] || 0;
-}
-
-function setStatus(taskId, status){
-  state.statuses[taskId] = parseInt(status);
-  asyncSaveTaskStatus(taskId, parseInt(status));
-  saveData(); // legacy fallback
-  render();
-}
-
-function getDriveUrl(taskId){
-  return (state.driveUrls && state.driveUrls[taskId]) ? state.driveUrls[taskId] : "";
-}
-
-async function asyncSaveTaskStatus(taskId, status) {
-  try {
-    await fetch('/api/tasks', { method: 'POST', body: JSON.stringify({action: 'update_status', taskId, status}) });
-  } catch(e) {}
-}
-
-async function asyncSaveDriveUrl(taskId, url) {
-  try {
-    await fetch('/api/tasks', { method: 'POST', body: JSON.stringify({action: 'update_drive_url', taskId, url}) });
-  } catch(e) {}
-}
-
-// ============================================================
-// RENDERING
-// ============================================================
-function render(){
-  renderStats();
-  renderOverview();
-  renderCalendar();
-  renderPersonTasks();
-  renderProfileTasks();
-  renderAdsTasks();
-  renderStories();
-  renderBriefs();
-  renderComments();
-}
-
-function renderStats(){
-  const all = [...TASKS,...(state.customTasks||[])];
-  const total = all.length;
-  const done = all.filter(t=>getStatus(t.id)>=4).length;
-  const inProgress = all.filter(t=>getStatus(t.id)===1).length;
-  const review = all.filter(t=>getStatus(t.id)===2).length;
-  const approved = all.filter(t=>getStatus(t.id)===3).length;
-  document.getElementById('stats-area').innerHTML = `
-    <div class="stat"><div class="stat-value">${total}</div><div class="stat-label">Total tarefas</div></div>
-    <div class="stat"><div class="stat-value" style="color:var(--yellow)">${inProgress}</div><div class="stat-label">Em produção</div></div>
-    <div class="stat"><div class="stat-value" style="color:var(--orange)">${review}</div><div class="stat-label">Em revisão</div></div>
-    <div class="stat"><div class="stat-value" style="color:var(--accent)">${approved}</div><div class="stat-label">Aprovados</div></div>
-    <div class="stat"><div class="stat-value" style="color:var(--green)">${done}</div><div class="stat-label">Postados</div></div>
-  `;
-}
-
-function taskHTML(t){
-  const s = getStatus(t.id);
-  return `<div class="task" onclick="openTask('${t.id}')">
-    <div class="task-status" style="background:${['var(--text3)','var(--yellow)','var(--orange)','var(--accent)','var(--green)'][s]}"></div>
-    <div class="task-content">
-      <div class="task-name">${t.title}</div>
-      <div class="task-meta">
-        <span class="tag tag-${t.tagColor||'gray'}">${t.papel||'TAREFA'}</span>
-        <span class="tag tag-gray">${t.format}</span>
-        <span class="tag tag-gray">${t.dayLabel||t.day}</span>
-        <span class="tag tag-blue">${t.personLabel||t.person}</span>
-      </div>
-    </div>
-    <select class="status-select status-${s}" onclick="event.stopPropagation()" onchange="setStatus('${t.id}',this.value)">
-      ${STATUSES.map((st,i)=>`<option value="${i}" ${i===s?'selected':''}>${st}</option>`).join('')}
-    </select>
-  </div>`;
-}
-
-function renderOverview(){
-  const profiles = [{key:'italo',label:'@italorickes',color:'var(--purple)'},{key:'leonardo',label:'@leonardollo',color:'var(--accent)'},{key:'gi',label:'@gestao.impacto',color:'var(--green)'}];
-  const all = [...TASKS,...(state.customTasks||[])];
-  let html = '';
-  profiles.forEach(p=>{
-    const tasks = all.filter(t=>t.profile===p.key);
-    html += `<div class="card"><div class="card-header" style="border-left:3px solid ${p.color}"><span class="card-title">${p.label}</span><span style="font-size:.7rem;color:var(--text3)">${tasks.filter(t=>getStatus(t.id)>=4).length}/${tasks.length} postados</span></div><div class="card-body">${tasks.sort((a,b)=>DAYS_ORDER.indexOf(a.day)-DAYS_ORDER.indexOf(b.day)).map(taskHTML).join('')}</div></div>`;
-  });
-  document.getElementById('overview-tasks').innerHTML = html;
-}
-
-function renderCalendar(){
-  const all = [...TASKS,...(state.customTasks||[])];
-  let html = ['SEG','TER','QUA','QUI','SEX','SÁB','DOM'].map(d=>`<div class="cal-h">${d}</div>`).join('');
-  DAYS_ORDER.forEach(day=>{
-    const tasks = all.filter(t=>t.day===day);
-    html += `<div class="cal-c"><div class="day-num">${DAYS_FULL[day]}</div>`;
-    tasks.forEach(t=>{
-      const colors = {italo:'background:rgba(168,85,247,0.2);color:var(--purple)',leonardo:'background:rgba(59,130,246,0.2);color:var(--accent)',gi:'background:rgba(34,197,94,0.2);color:var(--green)'};
-      html += `<div class="cal-item" style="${colors[t.profile]||''}" onclick="openTask('${t.id}')" title="${t.title}">${t.profileLabel}: ${t.format}</div>`;
-    });
-    html += '</div>';
-  });
-  document.getElementById('calendar-grid').innerHTML = html;
-}
-
-function renderPersonTasks(){
-  const all = [...TASKS,...(state.customTasks||[])];
-  ['estrategista','fabricio','lucas'].forEach(p=>{
-    const el = document.getElementById('tasks-'+p);
-    if(!el) return;
-    const tasks = all.filter(t=>t.person===p);
-    const byDay = {};
-    tasks.forEach(t=>{ if(!byDay[t.day]) byDay[t.day]=[]; byDay[t.day].push(t); });
-    let html = '';
-    DAYS_ORDER.forEach(d=>{
-      if(byDay[d]){
-        html += `<h3 style="font-size:.85rem;color:var(--text3);margin:1rem 0 .5rem;text-transform:uppercase;letter-spacing:.05em">${DAYS_FULL[d]}</h3>`;
-        byDay[d].forEach(t=>{ html += taskHTML(t); });
-      }
-    });
-    el.innerHTML = html || '<p style="color:var(--text3)">Nenhuma tarefa atribuída.</p>';
-  });
-}
-
-function renderProfileTasks(){
-  const all = [...TASKS,...(state.customTasks||[])];
-  ['italo','leonardo','gi'].forEach(p=>{
-    const el = document.getElementById('tasks-'+p);
-    if(!el) return;
-    const tasks = all.filter(t=>t.profile===p).sort((a,b)=>DAYS_ORDER.indexOf(a.day)-DAYS_ORDER.indexOf(b.day));
-    el.innerHTML = `<div class="grid grid-3">${tasks.map(taskHTML).join('')}</div>`;
-  });
-}
-
-function renderAdsTasks(){
-  const el = document.getElementById('tasks-ads');
-  if(!el) return;
-  const all = [...TASKS,...(state.customTasks||[])];
-  const tasks = all.filter(t=>t.profile==='ads').sort((a,b)=>DAYS_ORDER.indexOf(a.day)-DAYS_ORDER.indexOf(b.day));
-  el.innerHTML = tasks.length > 0 ? `<div class="grid grid-3">${tasks.map(taskHTML).join('')}</div>` : '<p style="color:var(--text3)">Nenhum anúncio cadastrado ainda.</p>';
-}
-
-function renderStories(){
-  const el = document.getElementById('stories-content');
-  el.innerHTML = `
-    <div class="card" style="margin-bottom:1rem"><div class="card-header"><span class="card-title">📱 Templates de Stories — Fabrício cria, Tu posta</span></div><div class="card-body">
-    <p style="color:var(--text2);margin-bottom:1rem">6 templates base que o Fabrício cria UMA VEZ e depois só troca o texto diariamente.</p>
-    <div class="grid grid-3">
-      <div style="padding:.75rem;background:var(--s2);border-radius:8px"><strong style="color:var(--green);font-size:.75rem">8h — BOM DIA</strong><p style="font-size:.8rem;color:var(--text2);margin-top:.3rem">Fundo escuro + enquete do dia. Muda o texto por dia da semana.</p></div>
-      <div style="padding:.75rem;background:var(--s2);border-radius:8px"><strong style="color:var(--accent);font-size:.75rem">9h-10h — CORTE DO DIA</strong><p style="font-size:.8rem;color:var(--text2);margin-top:.3rem">Lucas entrega 1 mini-corte 15s/dia/perfil. Total: 21/semana.</p></div>
-      <div style="padding:.75rem;background:var(--s2);border-radius:8px"><strong style="color:var(--orange);font-size:.75rem">11h-12h — CONTEÚDO EDUCATIVO</strong><p style="font-size:.8rem;color:var(--text2);margin-top:.3rem">2-3 stories sequenciais. Rotaciona por pilar (Seg=Mentalidade, Ter=Pessoas, Qua=Processos, Qui=Vendas).</p></div>
-      <div style="padding:.75rem;background:var(--s2);border-radius:8px"><strong style="color:var(--pink);font-size:.75rem">14h — BASTIDOR</strong><p style="font-size:.8rem;color:var(--text2);margin-top:.3rem">Ítalo/Leonardo mandam 1 foto/vídeo rápido do celular. GI: repost dos mentores.</p></div>
-      <div style="padding:.75rem;background:var(--s2);border-radius:8px"><strong style="color:var(--purple);font-size:.75rem">17h-18h — PROVA SOCIAL + INTERAÇÃO</strong><p style="font-size:.8rem;color:var(--text2);margin-top:.3rem">Print de resultado de aluno + enquete segmentadora (quem responde recebe DM do comercial).</p></div>
-      <div style="padding:.75rem;background:var(--s2);border-radius:8px"><strong style="color:var(--red);font-size:.75rem">20h-21h — CTA + FECHAMENTO</strong><p style="font-size:.8rem;color:var(--text2);margin-top:.3rem">CTA com link/direct + frase reflexiva de encerramento.</p></div>
-    </div></div></div>
-    <div class="card"><div class="card-header"><span class="card-title">📊 Produção Semanal de Stories</span></div><div class="card-body">
-    <p style="color:var(--text2);font-size:.85rem"><strong>Lucas:</strong> 21 mini-cortes (1/dia/perfil, 15s cada)<br><strong>Fabrício:</strong> ~100-120 stories gráficos usando templates<br><strong>Ítalo:</strong> 1-2 stories rápidos/dia no celular (15s max)<br><strong>Leonardo:</strong> 1 story bastidor/dia (5-10s, celular)<br><strong>@gestao.impacto:</strong> Zero gravação. 100% design + acervo.</p>
-    </div></div>
-  `;
-}
-
-function renderBriefs(){
-  const el = document.getElementById('all-briefs');
-  el.innerHTML = TASKS.map(t=>`<div class="card" style="cursor:pointer" onclick="openTask('${t.id}')"><div class="card-header" style="border-left:3px solid ${PROFILE_COLORS[t.profile]||'var(--s3)'}"><span class="card-title" style="font-size:.8rem">${t.profileLabel} — ${t.dayLabel}</span></div><div class="card-body"><p style="font-size:.85rem;font-weight:500;margin-bottom:.3rem">${t.title}</p><span class="tag tag-${t.tagColor||'gray'}">${t.papel}</span> <span class="tag tag-gray">${t.format}</span></div></div>`).join('');
-}
-
-function renderComments(){
-  const el = document.getElementById('comments-list');
-  const comments = state.comments || [];
-  el.innerHTML = comments.slice().reverse().map(c=>`<div class="card" style="margin-bottom:.5rem"><div class="card-body"><div style="display:flex;justify-content:space-between;margin-bottom:.3rem"><strong style="color:var(--accent);font-size:.8rem">${c.name}</strong><span style="font-size:.7rem;color:var(--text3)">${c.createdAt?new Date(c.createdAt).toLocaleString('pt-BR'):''}</span></div><p style="font-size:.85rem;color:var(--text2)">${c.text}</p></div></div>`).join('') || '<p style="color:var(--text3)">Nenhum comentário ainda.</p>';
-}
-
-// ============================================================
-// INTERACTIONS
-// ============================================================
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.sidebar-item').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.mobile-nav button').forEach(b=>b.classList.remove('active'));
-  const page = document.getElementById('page-'+id);
-  if(page) page.classList.add('active');
-  event?.target?.classList?.add('active');
-  window.scrollTo(0,0);
-}
-
-// We'll store the explicitly currently opened task to associate with the Drive link
-let currentOpenedTaskId = null;
-
-function openTask(id){
-  const t = [...TASKS,...(state.customTasks||[])].find(x=>x.id===id);
-  if(!t) return;
-  currentOpenedTaskId = id;
-  document.getElementById('modal-title').textContent = t.title;
-  document.getElementById('modal-body').innerHTML = `
-    <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem">
-      <span class="tag tag-${t.tagColor||'gray'}">${t.papel||'TAREFA'}</span>
-      <span class="tag tag-gray">${t.format}</span>
-      <span class="tag tag-gray">${t.dayLabel||t.day}</span>
-      <span class="tag tag-blue">${t.personLabel||t.person}</span>
-      <span class="tag tag-${['gray','yellow','orange','blue','green'][getStatus(t.id)]}">${STATUSES[getStatus(t.id)]}</span>
-    </div>
-    ${t.brief?`<h4>📋 Briefing</h4><div class="brief-block">${t.brief.replace(/\\n/g,'<br>')}</div>`:''}
-    ${t.edição?`<h4>🎬 Edição / Design</h4><div class="brief-block" style="border-left-color:var(--yellow)">${t.edição.replace(/\\n/g,'<br>')}</div>`:''}
-    ${t.legenda?`<h4>📝 Legenda (copiar e colar)</h4><div class="legend-block">${t.legenda.replace(/\n/g,'<br>')}</div><button class="btn btn-outline btn-sm" onclick="copyLegend(this)" style="margin-top:-.5rem;margin-bottom:1rem">📋 Copiar legenda</button>`:''}
-  `;
-  
-  // Set up the Drive input / button
-  const driveInput = document.getElementById('task-drive-url');
-  const driveBtnContainer = document.getElementById('task-current-drive-btn');
-  const currentUrl = getDriveUrl(id);
-  driveInput.value = currentUrl;
-  
-  if (currentUrl) {
-    driveBtnContainer.style.display = 'block';
-    driveBtnContainer.innerHTML = `<a href="${currentUrl}" target="_blank" class="btn btn-primary" style="width:100%;justify-content:center;font-size:.9rem;background:var(--green);border-color:var(--green);box-shadow:0 4px 15px rgba(34,197,94,0.3)">☁️ Acessar / Baixar Material</a>`;
-  } else {
-    driveBtnContainer.style.display = 'none';
-  }
-  
-  document.getElementById('taskModal').classList.add('open');
-}
-
-function saveDriveUrl() {
-  if (!currentOpenedTaskId) return;
-  const url = document.getElementById('task-drive-url').value.trim();
-  if (!state.driveUrls) state.driveUrls = {};
-  state.driveUrls[currentOpenedTaskId] = url;
-  
-  asyncSaveDriveUrl(currentOpenedTaskId, url);
-  saveData(); // legacy fallback
-  showToast('Link do Drive salvo com sucesso!');
-  
-  // Re-open to refresh the view
-  openTask(currentOpenedTaskId);
-}
-
-function closeModal(){
-  document.getElementById('taskModal').classList.remove('open');
-}
-
-function copyLegend(btn){
-  const text = btn.previousElementSibling.textContent;
-  navigator.clipboard.writeText(text).then(()=>showToast('Legenda copiada!'));
-}
-
-function addCustomTask(){
-  const title = document.getElementById('new-title').value.trim();
-  if(!title) return showToast('Preenche o título!');
-  const task = {
-    id:'custom_'+Date.now(),
-    title,
-    profile:document.getElementById('new-profile').value,
-    profileLabel: document.getElementById('new-profile').selectedOptions[0].text,
-    person:document.getElementById('new-person').value,
-    personLabel:{fabricio:'Fabrício',lucas:'Lucas',gabriel:'Gabriel',estrategista:'William'}[document.getElementById('new-person').value],
-    day:document.getElementById('new-day').value,
-    dayLabel:DAYS_FULL[document.getElementById('new-day').value],
-    format:document.getElementById('new-format').selectedOptions[0].text,
-    papel:'EXTRA',
-    tagColor:'gray',
-    brief:document.getElementById('new-brief').value,
-    legenda:'',
-    edição:''
-  };
-  if(!state.customTasks) state.customTasks = [];
-  state.customTasks.push(task);
-  saveData();
-  render();
-  document.getElementById('new-title').value='';
-  document.getElementById('new-brief').value='';
-  showToast('Tarefa criada!');
-}
-
-function addComment(){
-  const name = document.getElementById('comment-name').value.trim();
-  const text = document.getElementById('comment-text').value.trim();
-  if(!name||!text) return showToast('Preenche nome e comentário!');
-  if(!state.comments) state.comments = [];
-  state.comments.push({name,text,createdAt:new Date().toISOString()});
-  saveData();
-  render();
-  document.getElementById('comment-text').value='';
-  showToast('Comentário adicionado!');
-}
-
-function showToast(msg){
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.style.display='block';
-  setTimeout(()=>{t.style.display='none'},2500);
-}
-
-// Close modal on overlay click
-document.getElementById('taskModal').addEventListener('click',function(e){
-  if(e.target===this) closeModal();
-});
-
-// Init
-loadData();
-</script>
+<!-- Supabase CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
