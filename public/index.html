@@ -168,30 +168,9 @@ select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%
 <body>
 
 <!-- ════════════════════════════════════════
-     LOGIN SCREEN
-════════════════════════════════════════ -->
-<div id="login-screen">
-  <div class="login-card">
-    <div class="login-logo">🚀 <span>GI</span> Dashboard</div>
-    <p class="login-subtitle">Gestão de Impacto — Social Media 2026</p>
-    <label class="login-label">Seu nome</label>
-    <input type="text" id="login-email" class="login-input" placeholder="Ex: William" autocomplete="off" onkeydown="if(event.key==='Enter')doLogin()">
-    <label class="login-label">Senha</label>
-    <input type="password" id="login-password" class="login-input" placeholder="Ex: william123" onkeydown="if(event.key==='Enter')doLogin()">
-    <button id="login-btn" class="login-btn" onclick="doLogin()">Entrar</button>
-    <div id="login-error" class="login-error"></div>
-    <div class="login-hint">
-      <strong style="color:var(--text2)">Acesso da equipe</strong><br>
-      Digite seu primeiro nome e a senha no formato <span style="color:var(--accent)">nome123</span><br>
-      Ex: <strong>William</strong> / <strong>william123</strong>
-    </div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════════════
      MAIN APP
 ════════════════════════════════════════ -->
-<div class="app" id="app" style="display:none">
+<div class="app" id="app">
 
 <!-- SIDEBAR -->
 <div class="sidebar">
@@ -220,8 +199,8 @@ select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%
   <div class="sidebar-item" onclick="showPage('comments')">💬 Comentários</div>
 
   <div class="sidebar-user">
-    <span class="sidebar-user-name" id="user-badge">👤 —</span>
-    <button class="sidebar-logout" onclick="doLogout()">Sair</button>
+    <span class="sidebar-user-name" id="user-badge">👤 William</span>
+    <button class="sidebar-logout" onclick="doLogout()" style="display:none">Sair</button>
   </div>
 </div>
 
@@ -474,53 +453,13 @@ let currentOpenedTaskId = null;
 let currentUser = null;
 let draggingTaskId = null;
 
-// ── AUTH ──────────────────────────────────────────────────────
-function initAuth() {
-  const saved = localStorage.getItem('gi-user');
-  if (saved) {
-    try {
-      const user = JSON.parse(saved);
-      const valid = TEAM_USERS.find(u => u.name === user.name && u.password === user.password);
-      if (valid) { handleLoggedIn(valid); return; }
-    } catch(e) {}
-  }
-  showLogin();
-}
-
-function handleLoggedIn(member) {
-  currentUser = member;
-  localStorage.setItem('gi-user', JSON.stringify(member));
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('app').style.display = 'flex';
-  const badge = document.getElementById('user-badge');
-  if (badge) badge.textContent = `👤 ${member.name}`;
+// ── INIT ──────────────────────────────────────────────────────
+function initApp() {
+  currentUser = TEAM_USERS[0]; // Default to William
   loadData();
 }
 
-function showLogin() {
-  currentUser = null;
-  document.getElementById('login-screen').style.display = 'flex';
-  document.getElementById('app').style.display = 'none';
-}
-
-function doLogin() {
-  const nameInput = document.getElementById('login-email').value.trim();
-  const password  = document.getElementById('login-password').value.trim();
-  const errEl = document.getElementById('login-error');
-  errEl.textContent = '';
-  const member = TEAM_USERS.find(u => u.name.toLowerCase() === nameInput.toLowerCase() && u.password === password);
-  if (member) {
-    handleLoggedIn(member);
-  } else {
-    errEl.textContent = 'Nome ou senha incorretos.';
-    document.getElementById('login-password').value = '';
-  }
-}
-
-function doLogout() {
-  localStorage.removeItem('gi-user');
-  showLogin();
-}
+initApp();
 
 // ── STORAGE ───────────────────────────────────────────────────
 async function loadData() {
