@@ -1,0 +1,20 @@
+{
+  "name": "instagram-scraper",
+  "version": "1.0.0",
+  "description": "Ferramenta de scraping de conteudo do Instagram para alimentar o agente designer",
+  "main": "index.js",
+  "bin": {
+    "ig-scraper": "./index.js"
+  },
+  "scripts": {
+    "scrape": "node index.js",
+    "scrape:profile": "node index.js --profile",
+    "scrape:post": "node index.js --post"
+  },
+  "dependencies": {
+    "puppeteer-core": "^22.0.0",
+    "commander": "^12.0.0",
+    "ora": "^5.4.1",
+    "chalk": "^4.1.2"
+  }
+}
