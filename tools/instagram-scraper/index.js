@@ -7,6 +7,7 @@ const path = require('path');
 const fs = require('fs');
 const BrowserManager = require('./src/browser');
 const InstagramScraper = require('./src/scraper');
+const PublicScraper = require('./src/public-scraper');
 const ImageDownloader = require('./src/downloader');
 const CONFIG = require('./src/config');
 
@@ -239,6 +240,151 @@ program
   });
 
 // ----------------------------------------------------------
+// Comando: rapido (scraping publico sem login)
+// ----------------------------------------------------------
+program
+  .command('rapido <url>')
+  .description('Scraping rapido de um post publico (sem login/browser)')
+  .option('-o, --output <dir>', 'Diretorio de saida', CONFIG.OUTPUT_DIR)
+  .option('--nome <nome>', 'Nome customizado para a pasta do post')
+  .action(async (url, opts) => {
+    if (!url.includes('instagram.com')) {
+      console.log(chalk.red('URL invalida. Use uma URL do Instagram.'));
+      return;
+    }
+
+    console.log(chalk.cyan.bold('\n  Scraping publico (sem login)\n'));
+
+    const publicScraper = new PublicScraper();
+    const downloader = new ImageDownloader(opts.output);
+
+    try {
+      const postData = await publicScraper.scrapePost(url);
+
+      if (opts.nome) {
+        postData.caption = opts.nome;
+      }
+
+      console.log('');
+      console.log(chalk.white(`  Tipo:     ${postData.type}`));
+      console.log(chalk.white(`  Imagens:  ${postData.images.length}`));
+      console.log(chalk.white(`  Perfil:   ${postData.profile || 'desconhecido'}`));
+
+      if (postData.caption) {
+        const preview = postData.caption.slice(0, 80) + (postData.caption.length > 80 ? '...' : '');
+        console.log(chalk.white(`  Caption:  ${preview}`));
+      }
+
+      if (postData.images.length === 0) {
+        console.log(chalk.yellow('\n  Nenhuma imagem encontrada. Possiveis causas:'));
+        console.log(chalk.yellow('  - Post/perfil privado'));
+        console.log(chalk.yellow('  - Instagram bloqueando IP (comum em servidores/cloud)'));
+        console.log(chalk.yellow('  - URL incorreta'));
+        console.log(chalk.gray('\n  Solucoes:'));
+        console.log(chalk.gray('  1. Tente no seu computador local (nao em servidor)'));
+        console.log(chalk.gray('  2. Use o comando "post" com login: node index.js post <url>'));
+        return;
+      }
+
+      // Baixar imagens
+      const profileName = postData.profile || 'post-avulso';
+      const spinner = ora('Baixando imagens...').start();
+      const result = await downloader.savePostImages(postData, profileName, 1);
+      spinner.succeed(chalk.green('Imagens baixadas!'));
+
+      console.log('\n' + chalk.green.bold('=== Resultado ==='));
+      console.log(chalk.white(`  Pasta:    ${result.folder}`));
+      console.log(chalk.white(`  Arquivos: ${result.images.map(i => i.file).join(', ')}`));
+      console.log('');
+    } catch (err) {
+      console.log(chalk.red(`\n  Erro: ${err.message}`));
+    }
+  });
+
+// ----------------------------------------------------------
+// Comando: rapido-perfil (scraping publico de perfil)
+// ----------------------------------------------------------
+program
+  .command('rapido-perfil <username>')
+  .description('Scraping rapido de posts publicos de um perfil (sem login)')
+  .option('-n, --max <number>', 'Numero maximo de posts', parseInt, 12)
+  .option('-o, --output <dir>', 'Diretorio de saida', CONFIG.OUTPUT_DIR)
+  .option('--tipo <tipo>', 'Filtrar por tipo: carrossel, post-estatico, video', '')
+  .action(async (username, opts) => {
+    console.log(chalk.cyan.bold(`\n  Scraping publico de @${username} (sem login)\n`));
+
+    const publicScraper = new PublicScraper();
+    const downloader = new ImageDownloader(opts.output);
+
+    try {
+      // Coletar URLs
+      const postUrls = await publicScraper.scrapeProfile(username, opts.max);
+
+      if (postUrls.length === 0) {
+        console.log(chalk.yellow('  Nenhum post encontrado. O perfil pode ser privado.'));
+        return;
+      }
+
+      console.log(chalk.green(`  ${postUrls.length} posts encontrados\n`));
+
+      // Processar cada post
+      const allResults = [];
+      let skipped = 0;
+
+      for (let i = 0; i < postUrls.length; i++) {
+        const spinner = ora(`Post ${i + 1}/${postUrls.length}...`).start();
+
+        try {
+          const postData = await publicScraper.scrapePost(postUrls[i]);
+
+          if (opts.tipo && postData.type !== opts.tipo) {
+            spinner.info(chalk.gray(`Post ${i + 1}: ${postData.type} (filtrado)`));
+            skipped++;
+            continue;
+          }
+
+          if (postData.images.length === 0) {
+            spinner.warn(chalk.yellow(`Post ${i + 1}: sem imagens`));
+            skipped++;
+            continue;
+          }
+
+          const result = await downloader.savePostImages(postData, username, i + 1);
+          allResults.push(result);
+
+          const tipoLabel = postData.type === 'carrossel'
+            ? chalk.cyan(`carrossel (${postData.images.length} slides)`)
+            : chalk.blue(postData.type);
+          spinner.succeed(`Post ${i + 1}: ${tipoLabel} -> ${chalk.gray(result.folderName)}`);
+
+          // Delay entre posts para nao ser bloqueado
+          if (i < postUrls.length - 1) {
+            await new Promise(r => setTimeout(r, 1500));
+          }
+        } catch (err) {
+          spinner.warn(chalk.yellow(`Post ${i + 1}: ${err.message}`));
+        }
+      }
+
+      if (allResults.length > 0) {
+        const report = downloader.generateReport(allResults, username);
+
+        console.log('\n' + chalk.green.bold('=== Scraping concluido! ==='));
+        console.log(chalk.white(`  Perfil:          @${username}`));
+        console.log(chalk.white(`  Posts baixados:   ${allResults.length}`));
+        console.log(chalk.white(`  Posts ignorados:  ${skipped}`));
+        console.log(chalk.white(`  Total de imagens: ${report.totalImages}`));
+        console.log(chalk.white(`  Saida:            ${opts.output}/${username}`));
+        console.log('');
+      } else {
+        console.log(chalk.yellow('\nNenhum post com imagens encontrado.'));
+      }
+    } catch (err) {
+      console.log(chalk.red(`\n  Erro: ${err.message}`));
+    }
+  });
+
+// ----------------------------------------------------------
 // Comando: listar
 // ----------------------------------------------------------
 program
@@ -357,12 +503,18 @@ if (!process.argv.slice(2).length) {
   console.log(chalk.white('  de conteudo do Instagram para o agente designer.\n'));
   program.outputHelp();
   console.log('');
-  console.log(chalk.gray('  Exemplos:'));
+  console.log(chalk.gray('  Exemplos (sem login - posts publicos):'));
+  console.log(chalk.gray('    $ node index.js rapido https://www.instagram.com/p/ABC123/'));
+  console.log(chalk.gray('    $ node index.js rapido-perfil italorickes -n 10'));
+  console.log(chalk.gray(''));
+  console.log(chalk.gray('  Exemplos (com login - posts privados):'));
   console.log(chalk.gray('    $ node index.js login -u meuuser -p minhasenha'));
   console.log(chalk.gray('    $ node index.js perfil italorickes -n 20'));
   console.log(chalk.gray('    $ node index.js perfil gestao.impacto --tipo carrossel'));
   console.log(chalk.gray('    $ node index.js post https://www.instagram.com/p/ABC123/'));
   console.log(chalk.gray('    $ node index.js post https://www.instagram.com/p/ABC123/ --nome "meu-post"'));
+  console.log(chalk.gray(''));
+  console.log(chalk.gray('  Gerenciamento:'));
   console.log(chalk.gray('    $ node index.js listar'));
   console.log(chalk.gray('    $ node index.js exportar'));
   console.log('');

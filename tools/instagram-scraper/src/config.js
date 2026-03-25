@@ -7,6 +7,9 @@ const CONFIG = {
   // Tempo maximo de espera para carregamento de paginas (ms)
   PAGE_TIMEOUT: 30000,
 
+  // Tempo maximo para requests HTTP (ms)
+  REQUEST_TIMEOUT: 15000,
+
   // Delay entre acoes para evitar deteccao (ms)
   ACTION_DELAY: 2000,
 
